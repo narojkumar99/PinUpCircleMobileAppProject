@@ -60,7 +60,6 @@ public class Subscriber extends AppCompatActivity {
         subscriberModel.setBonusPoints("100");
         subscriberModel.addUserPins(editTextPinCode.getText().toString());
         subscriberModel.setOtpEntity("123456789");
-
         subscriberModel.addUserAddresses(editTextSubscriberAddress.toString().trim(),"Kokata","Salt Lake","700108");
         subscriberModel.addUserSocialInterests("None");
 
