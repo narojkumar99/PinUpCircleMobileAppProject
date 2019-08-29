@@ -1,4 +1,4 @@
-package com.pinupcircle.ui.otpVerify;
+package com.pinupcircle.ui.MobileOTPAuthentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.pinupcircle.R;
-import com.pinupcircle.ui.subscriber.Subscriber;
 
 public class OTPAuthenticaton extends AppCompatActivity {
 
@@ -18,7 +17,6 @@ public class OTPAuthenticaton extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_authenticaton);
-
 
         initFields();
 

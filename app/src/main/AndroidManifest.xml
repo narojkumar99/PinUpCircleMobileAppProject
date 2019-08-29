@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pinupcircle">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
     <application
+        android:name=".networkutilts.VolleySingleton"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
@@ -14,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".networkutilts.VolleySingleton"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.MobileOTPAuthentication.MobileAuthentication"
+            android:label="@string/title_activity_mobile_authentication"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.launcher.SplashActivity"
             android:exported="true"
@@ -29,23 +32,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.otpVerify.PinCode"
+        <activity
+            android:name=".ui.MobileOTPAuthentication.PinCode"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity android:name=".ui.otpVerify.OTPAuthenticaton"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".ui.MobileOTPAuthentication.OTPAuthenticaton"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".ui.subscriber.Subscriber"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.subscriber.Subscriber"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".ui.subscriber.UserScriberActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.subscriber.UserScriberActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
     </application>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
 </manifest>

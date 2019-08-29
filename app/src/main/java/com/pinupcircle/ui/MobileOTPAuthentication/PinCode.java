@@ -1,4 +1,4 @@
-package com.pinupcircle.ui.otpVerify;
+package com.pinupcircle.ui.MobileOTPAuthentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 

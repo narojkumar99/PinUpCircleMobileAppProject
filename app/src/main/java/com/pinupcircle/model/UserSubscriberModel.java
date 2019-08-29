@@ -3,7 +3,7 @@ package com.pinupcircle.model;
 import java.util.ArrayList;
 import java.util.List;
 
-class UserPin{
+class UserPin {
     private String userPin;
 
     public UserPin(String userPin) {
@@ -18,7 +18,8 @@ class UserPin{
         this.userPin = userPin;
     }
 }
-class UserNewsPreference{
+
+class UserNewsPreference {
     private String userNewsPreference;
 
     public UserNewsPreference(String userNewsPreference) {
@@ -28,18 +29,16 @@ class UserNewsPreference{
     public String getUserNewsPreference() {
         return userNewsPreference;
     }
-
     public void setUserNewsPreference(String userNewsPreference) {
         this.userNewsPreference = userNewsPreference;
     }
 }
-class UserOTP{
-    private String userOTP;
 
+class UserOTP {
+    private String userOTP;
     public UserOTP(String userOTP) {
         this.userOTP = userOTP;
     }
-
     public String getUserOTP() {
         return userOTP;
     }
@@ -48,7 +47,8 @@ class UserOTP{
         this.userOTP = userOTP;
     }
 }
-class UserSocialInterest{
+
+class UserSocialInterest {
     private String userSocialInterest;
 
     public UserSocialInterest(String userSocialInterest) {
@@ -63,8 +63,9 @@ class UserSocialInterest{
         this.userSocialInterest = userSocialInterest;
     }
 }
-class UserAddress{
-    private String streetAddress,city,state,zip;
+
+class UserAddress {
+    private String streetAddress, city, state, zip;
 
     public UserAddress(String streetAddress, String city, String state, String zip) {
         this.streetAddress = streetAddress;
@@ -105,8 +106,11 @@ class UserAddress{
         this.zip = zip;
     }
 }
+
 public class UserSubscriberModel {
-    private String userName,userPhone,userAge,userEmail,userPickRef,userCountryCode,bonusPoints;
+    private String userName, userEmail, userPickRef, userCountryCode, bonusPoints;
+    private Long userPhone;
+    private Integer userAge;
     private List<UserPin> userPins;
     private List<UserNewsPreference> userNewsPreferences;
     private UserOTP otpEntity;
@@ -114,7 +118,10 @@ public class UserSubscriberModel {
     private List<UserSocialInterest> userSocialInterests;
 
     public UserSubscriberModel() {
-        userPins=new ArrayList<>();
+        this.userPins = new ArrayList<>();
+        this.userNewsPreferences = new ArrayList<>();
+        this.userAddresses = new ArrayList<>();
+        this.userSocialInterests = new ArrayList<>();
     }
 
     public List<UserPin> getUserPins() {
@@ -122,7 +129,7 @@ public class UserSubscriberModel {
     }
 
     public void addUserPins(String userPin) {
-        UserPin userPinObj=new UserPin(userPin);
+        UserPin userPinObj = new UserPin(userPin);
         this.userPins.add(userPinObj);
     }
 
@@ -131,7 +138,7 @@ public class UserSubscriberModel {
     }
 
     public void addUserNewsPreferences(String newsPreference) {
-        UserNewsPreference userNewsPreference=new UserNewsPreference(newsPreference);
+        UserNewsPreference userNewsPreference = new UserNewsPreference(newsPreference);
         userNewsPreferences.add(userNewsPreference);
     }
 
@@ -140,16 +147,16 @@ public class UserSubscriberModel {
     }
 
     public void setOtpEntity(String otp) {
-        UserOTP userOTP=new UserOTP(otp);
-        this.otpEntity=userOTP;
+        UserOTP userOTP = new UserOTP(otp);
+        this.otpEntity = userOTP;
     }
 
     public List<UserAddress> getUserAddresses() {
         return userAddresses;
     }
 
-    public void addUserAddresses(String streetAddress,String city,String state,String zip) {
-        UserAddress address=new UserAddress(streetAddress,city,state,zip);
+    public void addUserAddresses(String streetAddress, String city, String state, String zip) {
+        UserAddress address = new UserAddress(streetAddress, city, state, zip);
         userAddresses.add(address);
     }
 
@@ -158,7 +165,7 @@ public class UserSubscriberModel {
     }
 
     public void addUserSocialInterests(String userSocialInterest) {
-        UserSocialInterest socialInterest=new UserSocialInterest(userSocialInterest);
+        UserSocialInterest socialInterest = new UserSocialInterest(userSocialInterest);
         userSocialInterests.add(socialInterest);
     }
 
@@ -170,20 +177,19 @@ public class UserSubscriberModel {
         this.userName = userName;
     }
 
-    public String getUserPhone() {
+    public Long getUserPhone() {
         return userPhone;
     }
 
-    public void setUserPhone(String userPhone) {
+    public void setUserPhone(Long userPhone) {
         this.userPhone = userPhone;
     }
-
-    public String getUserAge() {
+    public Integer getUserAge() {
         return userAge;
     }
 
     public void setUserAge(String userAge) {
-        this.userAge = userAge;
+        this.userAge = Integer.parseInt(userAge);
     }
 
     public String getUserEmail() {
