@@ -19,6 +19,7 @@ import com.pinupcircle.R;
 import com.pinupcircle.model.UserSubscriberModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
 import com.pinupcircle.ui.subscriber.Subscriber;
+import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,8 @@ public class MobileAuthentication extends AppCompatActivity {
     UserSubscriberModel subscriberModel;
     String json = null;
     Context mContext;
+    String tag_json_obj = "json_string_req";
+    AppProgressDialog appProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +49,20 @@ public class MobileAuthentication extends AppCompatActivity {
     }
 
     private void initFields() {
+        appProgressDialog = new AppProgressDialog(mContext, "Please wait..");
         subscriberModel = new UserSubscriberModel();
         edTMobileNumberAuthentication = findViewById(R.id.edTMobileNumberAuthentication);
 
     }
-    public void onMobileAuthenticationClick(View view) {
 
+    public void onMobileAuthenticationClick(View view) {
         if (validate())
             doMobileAuthentication();
-
     }
 
     private void doMobileAuthentication() {
-
+        appProgressDialog.initializeProgress();
+        appProgressDialog.showProgressDialog();
         subscriberModel.setUserPhone(Long.valueOf(edTMobileNumberAuthentication.getText().toString().trim()));
         /*subscriberModel.setUserAge("12");
         subscriberModel.setUserEmail("None");
@@ -71,35 +75,38 @@ public class MobileAuthentication extends AppCompatActivity {
         subscriberModel.addUserSocialInterests("None");*/
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
-        System.out.println("tetag" + requestBody);
+        System.out.println("testing" + requestBody);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Constants.base_url + Constants.sub_registration, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println(response);
+                System.out.println("responsetesting" + response);
                 try {
                     jsonObjectResponse = new JSONObject(response);
                     int statusCode = jsonObjectResponse.getInt("registrationStatus");
                     if (statusCode == 1) {
+                        appProgressDialog.hideProgressDialog();
                         Toast.makeText(MobileAuthentication.this, ""
                                         + jsonObjectResponse.getString("description")
                                 , Toast.LENGTH_SHORT).show();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                         clearEditText();
-                        Intent i = new Intent(mContext,OTPAuthenticaton.class);
+                        Intent i = new Intent(mContext, OTPAuthenticaton.class);
                         startActivity(i);
                         finish();
                     } else {
+                        appProgressDialog.hideProgressDialog();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    appProgressDialog.hideProgressDialog();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error.toString());
+                appProgressDialog.hideProgressDialog();
                 NetworkResponse response = error.networkResponse;
                 if (response != null && response.data != null) {
                     switch (response.statusCode) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,15 +21,18 @@ import com.google.gson.Gson;
 import com.pinupcircle.R;
 import com.pinupcircle.model.UserSubscriberModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
+import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class Subscriber extends AppCompatActivity {
 
+    String tag_json_obj = "json_string_req";
     //final String url = "http://13.59.60.142:8080/users/registerUser?userdef=abc";
     UserSubscriberModel subscriberModel;
     ImageView imgNext;
@@ -42,8 +46,8 @@ public class Subscriber extends AppCompatActivity {
     String mobileNumber = "";
     JSONObject jsonObjectResponse = null;
     String json = null;
-
     Context mContext;
+    AppProgressDialog appProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +74,9 @@ public class Subscriber extends AppCompatActivity {
     }
 
     private void initFields() {
-
+        appProgressDialog =new AppProgressDialog(mContext,"Please wait..");
         subscriberModel = new UserSubscriberModel();
+
         imgNext = (ImageView) findViewById(R.id.imgNext);
         editTextSubscriberName = findViewById(R.id.editTextSubscriberName);
         editTextState = findViewById(R.id.editTextState);
@@ -85,10 +90,11 @@ public class Subscriber extends AppCompatActivity {
     public void onLoginClick(View view) {
         if (validate())
             doSubscriberRegistration();
-
     }
 
     private void doSubscriberRegistration() {
+        appProgressDialog.initializeProgress();
+        appProgressDialog.showProgressDialog();
         subscriberModel.setUserName(editTextSubscriberName.getText().toString().trim());
         subscriberModel.setUserPhone(Long.valueOf(editTextMobileNumber.getText().toString()));
         subscriberModel.setUserAge("34");
@@ -108,26 +114,32 @@ public class Subscriber extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 System.out.println(response);
+
                 try {
                     jsonObjectResponse = new JSONObject(response);
                     int statusCode = jsonObjectResponse.getInt("registrationStatus");
                     if (statusCode == 1) {
+                        appProgressDialog.hideProgressDialog();
                         Toast.makeText(Subscriber.this, ""
                                         + jsonObjectResponse.getString("description")
                                 , Toast.LENGTH_SHORT).show();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                         clearEditText();
                     } else {
+                        appProgressDialog.hideProgressDialog();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    appProgressDialog.hideProgressDialog();
+
                 }
             }
-        }, new Response.ErrorListener() {
+        },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error.toString());
+                appProgressDialog.hideProgressDialog();
                 NetworkResponse response = error.networkResponse;
                 if (response != null && response.data != null) {
                     switch (response.statusCode) {
@@ -156,7 +168,11 @@ public class Subscriber extends AppCompatActivity {
                 }
             }
         };
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest,tag_json_obj);
     }
 
     private boolean validate() {
