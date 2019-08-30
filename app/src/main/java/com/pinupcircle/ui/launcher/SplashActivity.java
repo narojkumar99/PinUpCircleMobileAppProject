@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.pinupcircle.R;
+import com.pinupcircle.model.RegisteredUserModel;
 import com.pinupcircle.ui.subscriber.UserScriberActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
         scheduleSplashScreen();
     }
+
     private void scheduleSplashScreen() {
         handler=new Handler();
         handler.postDelayed(new Runnable() {

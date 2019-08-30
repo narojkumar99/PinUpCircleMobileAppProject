@@ -2,7 +2,9 @@ package com.pinupcircle.ui.subscriber;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -19,8 +21,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.pinupcircle.R;
+import com.pinupcircle.model.RegisteredUserModel;
 import com.pinupcircle.model.UserSubscriberModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
+import com.pinupcircle.ui.ServiceProvider;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
 
@@ -48,7 +52,7 @@ public class Subscriber extends AppCompatActivity {
     String json = null;
     Context mContext;
     AppProgressDialog appProgressDialog;
-
+    RegisteredUserModel user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +80,8 @@ public class Subscriber extends AppCompatActivity {
     private void initFields() {
         appProgressDialog =new AppProgressDialog(mContext,"Please wait..");
         subscriberModel = new UserSubscriberModel();
-
-        imgNext = (ImageView) findViewById(R.id.imgNext);
+        user=new RegisteredUserModel(this);
+        imgNext = findViewById(R.id.imgNext);
         editTextSubscriberName = findViewById(R.id.editTextSubscriberName);
         editTextState = findViewById(R.id.editTextState);
         editTextCity = findViewById(R.id.editTextCity);
@@ -88,8 +92,12 @@ public class Subscriber extends AppCompatActivity {
     }
 
     public void onLoginClick(View view) {
-        if (validate())
+        if (validate()) {
+            user.logOut();
             doSubscriberRegistration();
+        }else{
+            startActivity(new Intent(Subscriber.this, ServiceProvider.class));
+        }
     }
 
     private void doSubscriberRegistration() {
@@ -118,6 +126,8 @@ public class Subscriber extends AppCompatActivity {
                 try {
                     jsonObjectResponse = new JSONObject(response);
                     int statusCode = jsonObjectResponse.getInt("registrationStatus");
+                    user.setUserRegId(jsonObjectResponse.getInt("userRegId"));
+                    user.setUserName(jsonObjectResponse.getString("userName"));
                     if (statusCode == 1) {
                         appProgressDialog.hideProgressDialog();
                         Toast.makeText(Subscriber.this, ""
@@ -125,6 +135,7 @@ public class Subscriber extends AppCompatActivity {
                                 , Toast.LENGTH_SHORT).show();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                         clearEditText();
+                        startActivity(new Intent(Subscriber.this, ServiceProvider.class));
                     } else {
                         appProgressDialog.hideProgressDialog();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
