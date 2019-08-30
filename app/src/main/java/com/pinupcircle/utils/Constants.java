@@ -3,6 +3,8 @@ package com.pinupcircle.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,9 @@ public class Constants {
     //http://13.59.60.142:8080/users/registerUser?userdef=abc"
     public static String base_url = "http://13.59.60.142:8080/";
     public static String sub_registration="users/registerUser?userdef=abc";
+    public static String services_provied_reg="serviceprovider";
+
+
 
     public static boolean emailValidator(String email) {
         Pattern pattern;
@@ -40,5 +45,7 @@ public class Constants {
     public static void displayMessage(Context mContext, String toastString){
         Toast.makeText(mContext, toastString, Toast.LENGTH_LONG).show();
     }
+
+
 
 }

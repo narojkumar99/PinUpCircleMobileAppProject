@@ -1,4 +1,4 @@
-package com.pinupcircle.ui.MobileOTPAuthentication;
+package com.pinupcircle.ui.mobileOTPAuthentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 

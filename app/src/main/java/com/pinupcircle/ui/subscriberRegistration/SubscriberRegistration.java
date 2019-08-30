@@ -1,11 +1,11 @@
-package com.pinupcircle.ui.subscriber;
+package com.pinupcircle.ui.subscriberRegistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,9 +13,15 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,19 +30,18 @@ import com.pinupcircle.R;
 import com.pinupcircle.model.RegisteredUserModel;
 import com.pinupcircle.model.UserSubscriberModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
-import com.pinupcircle.ui.ServiceProvider;
+import com.pinupcircle.ui.businessServicesProvider.BusinessServiceProvider;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class Subscriber extends AppCompatActivity {
+public class SubscriberRegistration extends AppCompatActivity {
 
-    String tag_json_obj = "json_string_req";
+    String tag_string_obj = "json_string_req";
     //final String url = "http://13.59.60.142:8080/users/registerUser?userdef=abc";
     UserSubscriberModel subscriberModel;
     ImageView imgNext;
@@ -53,11 +58,12 @@ public class Subscriber extends AppCompatActivity {
     Context mContext;
     AppProgressDialog appProgressDialog;
     RegisteredUserModel user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriber);
-        mContext = Subscriber.this;
+        mContext = SubscriberRegistration.this;
         initFields();
        /* editTextState.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -78,9 +84,9 @@ public class Subscriber extends AppCompatActivity {
     }
 
     private void initFields() {
-        appProgressDialog =new AppProgressDialog(mContext,"Please wait..");
+        appProgressDialog = new AppProgressDialog(mContext, "Please wait..");
         subscriberModel = new UserSubscriberModel();
-        user=new RegisteredUserModel(this);
+        user = new RegisteredUserModel(this);
         imgNext = findViewById(R.id.imgNext);
         editTextSubscriberName = findViewById(R.id.editTextSubscriberName);
         editTextState = findViewById(R.id.editTextState);
@@ -93,10 +99,10 @@ public class Subscriber extends AppCompatActivity {
 
     public void onLoginClick(View view) {
         if (validate()) {
-            user.logOut();
+            //user.logOut();
             doSubscriberRegistration();
-        }else{
-            startActivity(new Intent(Subscriber.this, ServiceProvider.class));
+        } else {
+            //startActivity(new Intent(SubscriberRegistration.this, BusinessServiceProvider.class));
         }
     }
 
@@ -116,13 +122,12 @@ public class Subscriber extends AppCompatActivity {
         subscriberModel.addUserSocialInterests("None");
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
-        System.out.println("tetag" + requestBody);
+        System.out.println("SubscriberRegistration" + requestBody);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Constants.base_url + Constants.sub_registration, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println(response);
-
+                System.out.println("SubscriberRegistrationResponse" + response);
                 try {
                     jsonObjectResponse = new JSONObject(response);
                     int statusCode = jsonObjectResponse.getInt("registrationStatus");
@@ -130,37 +135,36 @@ public class Subscriber extends AppCompatActivity {
                     user.setUserName(jsonObjectResponse.getString("userName"));
                     if (statusCode == 1) {
                         appProgressDialog.hideProgressDialog();
-                        Toast.makeText(Subscriber.this, ""
+                        Toast.makeText(SubscriberRegistration.this, ""
                                         + jsonObjectResponse.getString("description")
                                 , Toast.LENGTH_SHORT).show();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                         clearEditText();
-                        startActivity(new Intent(Subscriber.this, ServiceProvider.class));
+                        startActivity(new Intent(SubscriberRegistration.this, BusinessServiceProvider.class));
                     } else {
                         appProgressDialog.hideProgressDialog();
                         Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
+                    System.out.println("SubscriberRegistrationWebServiceError" + e.getMessage());
                     e.printStackTrace();
                     appProgressDialog.hideProgressDialog();
-
                 }
             }
-        },new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
+                System.out.println("JsnnObjetSubscriberRegistrationErrorResponse" + error.toString());
                 appProgressDialog.hideProgressDialog();
-                NetworkResponse response = error.networkResponse;
-                if (response != null && response.data != null) {
-                    switch (response.statusCode) {
-                        case 400:
-                            json = new String(response.data);
-                            json = Constants.trimMessage(json, "message");
-                            if (json != null) Constants.displayMessage(mContext, json);
-                            break;
-                    }
-                    //Additional cases
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(mContext,
+                            "Oops. Timeout error!",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }) {
@@ -179,11 +183,23 @@ public class Subscriber extends AppCompatActivity {
                 }
             }
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                30000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest,tag_json_obj);
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest, tag_string_obj);
     }
 
     private boolean validate() {
@@ -240,6 +256,7 @@ public class Subscriber extends AppCompatActivity {
         }
         return validResp;
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

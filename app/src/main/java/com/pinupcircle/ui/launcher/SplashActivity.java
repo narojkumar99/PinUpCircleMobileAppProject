@@ -5,12 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
 import android.view.WindowManager;
 
 import com.pinupcircle.R;
-import com.pinupcircle.model.RegisteredUserModel;
-import com.pinupcircle.ui.subscriber.UserScriberActivity;
+import com.pinupcircle.ui.subscriberRegistration.UserScriberActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -32,8 +30,11 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, UserScriberActivity.class));
-
+                //startActivity(new Intent(SplashActivity.this, UserScriberActivity.class));
+                Intent intent = new Intent(SplashActivity.this, UserScriberActivity.class);
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                startActivity(intent);
+                finish();
             }
         },SPLASH_TIME_OUT);
     }

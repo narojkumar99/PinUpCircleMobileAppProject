@@ -1,4 +1,4 @@
-package com.pinupcircle.ui.subscriber;
+package com.pinupcircle.ui.subscriberRegistration;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.pinupcircle.R;
-import com.pinupcircle.ui.launcher.SplashActivity;
+import com.pinupcircle.ui.mobileOTPAuthentication.MobileAuthentication;
 
 public class UserScriberActivity extends AppCompatActivity {
 
@@ -27,7 +27,10 @@ public class UserScriberActivity extends AppCompatActivity {
         imgRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(UserScriberActivity.this, Subscriber.class));
+                Intent intent = new Intent(UserScriberActivity.this, MobileAuthentication.class);
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                startActivity(intent);
+                finish();
             }
         });
     }
