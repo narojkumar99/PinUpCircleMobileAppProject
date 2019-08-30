@@ -11,6 +11,7 @@ import com.chaos.view.PinView;
 import com.google.android.material.snackbar.Snackbar;
 import com.pinupcircle.R;
 import com.pinupcircle.ui.subscriberRegistration.SubscriberNameRegistration;
+import com.pinupcircle.ui.subscriberRegistration.SubscriberRegistration;
 
 public class OTPAuthenticaton extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class OTPAuthenticaton extends AppCompatActivity {
     }
 
     private void otpAuthenticationVerify() {
-        startActivity(new Intent(OTPAuthenticaton.this, SubscriberNameRegistration.class));
+        startActivity(new Intent(OTPAuthenticaton.this, SubscriberRegistration.class));
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
         finish();
 

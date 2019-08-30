@@ -107,7 +107,7 @@ public class BusinessServiceProvider extends AppCompatActivity {
                 } else if (error instanceof NoConnectionError) {
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(mContext,
-                            "Oops. Timeout error!",
+                            "Timeout error!",
                             Toast.LENGTH_LONG).show();
                 }
             }
