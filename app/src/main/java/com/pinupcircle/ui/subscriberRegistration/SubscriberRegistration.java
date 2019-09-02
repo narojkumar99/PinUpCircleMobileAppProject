@@ -112,7 +112,7 @@ public class SubscriberRegistration extends AppCompatActivity {
         subscriberModel.setUserPhone(Long.valueOf(editTextMobileNumber.getText().toString()));
         subscriberModel.setUserEmail(editTextSubscriberEmail.getText().toString().trim());
         subscriberModel.setUserCountryCode("IN");
-        subscriberModel.addUserPins(editTextPinCode.getText().toString().trim());
+        subscriberModel.addUserPins(Integer.parseInt(editTextPinCode.getText().toString().trim()));
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
         System.out.println("SubscriberRegistration" + requestBody);

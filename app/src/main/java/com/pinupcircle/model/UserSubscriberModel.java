@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 class UserPin {
-    private String userPin;
+    private Integer userPin;
 
-    public UserPin(String userPin) {
+    public UserPin(Integer userPin) {
         this.userPin = userPin;
     }
 
-    public String getUserPin() {
+    public Integer getUserPin() {
         return userPin;
     }
 
-    public void setUserPin(String userPin) {
+    public void setUserPin(Integer userPin) {
         this.userPin = userPin;
     }
 }
@@ -44,7 +44,7 @@ public class UserSubscriberModel {
         return userPins;
     }
 
-    public void addUserPins(String userPin) {
+    public void addUserPins(Integer userPin) {
         UserPin userPinObj = new UserPin(userPin);
         this.userPins.add(userPinObj);
     }
