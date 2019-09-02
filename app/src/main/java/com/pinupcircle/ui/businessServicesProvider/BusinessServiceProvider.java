@@ -1,9 +1,15 @@
 package com.pinupcircle.ui.businessServicesProvider;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,14 +34,19 @@ import com.pinupcircle.model.ServiceProviderModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
+import com.pinupcircle.utils.ImageUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class BusinessServiceProvider extends AppCompatActivity {
     //final String url = "http://13.59.60.142:8080/serviceprovider";
+    private final int IMG_REQUEST=1;
     RegisteredUserModel user;
     ServiceProviderModel serviceProviderModel;
-    ImageView imgServiceNext;
+    ImageView imgServiceNext,uploadServiceImage;
     EditText editTextServiceProviderName,
             editTextServiceProviderAddress,
             editTextServiceProviderMobileNumber,
@@ -59,6 +70,7 @@ public class BusinessServiceProvider extends AppCompatActivity {
         user = new RegisteredUserModel(this);
         serviceProviderModel = new ServiceProviderModel();
         imgServiceNext = findViewById(R.id.imgServiceNext);
+        uploadServiceImage=findViewById(R.id.serviceUploadImage);
         editTextServiceProviderName = findViewById(R.id.editTextServiceProviderName);
         editTextServiceProviderService = findViewById(R.id.editTextServiceProviderService);
         editTextServiceState = findViewById(R.id.editTextServiceState);
@@ -82,7 +94,6 @@ public class BusinessServiceProvider extends AppCompatActivity {
         serviceProviderModel.addBusinessPins(editTextServicePinCode.getText().toString().trim());
         serviceProviderModel.addUserExpertise("Crafting");
         serviceProviderModel.addUserExpertise("Designing");
-        serviceProviderModel.addUserWorkView("abc.jpeg");
 
         Gson gson = new Gson();
         final String requestBody = gson.toJson(serviceProviderModel);
@@ -99,7 +110,7 @@ public class BusinessServiceProvider extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error.toString());
-                System.out.println("JsonObjetBusinessProviderSubscriberRegistrationErrorResponse" + error.toString());
+                System.out.println("JsonObjectBusinessProviderSubscriberRegistrationErrorResponse" + error.toString());
                 if (error instanceof NetworkError) {
                 } else if (error instanceof ServerError) {
                 } else if (error instanceof AuthFailureError) {
@@ -156,6 +167,28 @@ public class BusinessServiceProvider extends AppCompatActivity {
         editTextServicePinCode.setText("");
         editTextServiceProviderEmail.setText("");
         editTextServiceCity.setText("");
+    }
+
+    public void onAddImageClick(View view) {
+        Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,IMG_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==IMG_REQUEST && resultCode==RESULT_OK && data!=null){
+            Uri path=data.getData();
+            try {
+                Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+                uploadServiceImage.setImageBitmap(bitmap);
+                serviceProviderModel.addUserWorkView(ImageUtil.convert(bitmap));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

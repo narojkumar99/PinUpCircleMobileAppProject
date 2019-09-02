@@ -1,10 +1,14 @@
 package com.pinupcircle.ui.subscriberRegistration;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -33,10 +37,12 @@ import com.pinupcircle.networkutilts.VolleySingleton;
 import com.pinupcircle.ui.businessServicesProvider.BusinessServiceProvider;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
+import com.pinupcircle.utils.ImageUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class SubscriberRegistration extends AppCompatActivity {
@@ -44,14 +50,9 @@ public class SubscriberRegistration extends AppCompatActivity {
     String tag_string_obj = "json_string_req";
     //final String url = "http://13.59.60.142:8080/users/registerUser?userdef=abc";
     UserSubscriberModel subscriberModel;
-    ImageView imgNext;
-    EditText editTextSubscriberName,
-            editTextSubscriberAddress,
-            editTextMobileNumber,
-            editTextState,
-            editTextPinCode,
-            editTextSubsriberEmail,
-            editTextCity;
+    private final int IMG_REQUEST=1;
+    ImageView imgNext,imgSubscriberUpload;
+    EditText editTextSubscriberName,editTextMobileNumber,editTextPinCode,editTextSubscriberEmail;
     String mobileNumber = "";
     JSONObject jsonObjectResponse = null;
     String json = null;
@@ -88,18 +89,16 @@ public class SubscriberRegistration extends AppCompatActivity {
         subscriberModel = new UserSubscriberModel();
         user = new RegisteredUserModel(this);
         imgNext = findViewById(R.id.imgNext);
+        imgSubscriberUpload=findViewById(R.id.imgSubscriberUpload);
         editTextSubscriberName = findViewById(R.id.editTextSubscriberName);
-        editTextState = findViewById(R.id.editTextState);
-        editTextCity = findViewById(R.id.editTextCity);
         editTextMobileNumber = findViewById(R.id.editTextMobileNumber);
         editTextPinCode = findViewById(R.id.editTextPinCode);
-        editTextSubscriberAddress = findViewById(R.id.editTextSubscriberAddress);
-        editTextSubsriberEmail = findViewById(R.id.editTextSubscriberEmail);
+        editTextSubscriberEmail = findViewById(R.id.editTextSubscriberEmail);
     }
 
     public void onLoginClick(View view) {
         if (validate()) {
-            //user.logOut();
+            user.logOut();
             doSubscriberRegistration();
         } else {
             //startActivity(new Intent(SubscriberRegistration.this, BusinessServiceProvider.class));
@@ -111,20 +110,14 @@ public class SubscriberRegistration extends AppCompatActivity {
         appProgressDialog.showProgressDialog();
         subscriberModel.setUserName(editTextSubscriberName.getText().toString().trim());
         subscriberModel.setUserPhone(Long.valueOf(editTextMobileNumber.getText().toString()));
-        subscriberModel.setUserAge("34");
-        subscriberModel.setUserEmail(editTextSubsriberEmail.getText().toString().trim());
-        subscriberModel.setUserPickRef("c:image");
+        subscriberModel.setUserEmail(editTextSubscriberEmail.getText().toString().trim());
         subscriberModel.setUserCountryCode("IN");
-        subscriberModel.setBonusPoints("100");
         subscriberModel.addUserPins(editTextPinCode.getText().toString().trim());
-        subscriberModel.setOtpEntity("123456789");
-        subscriberModel.addUserAddresses(editTextSubscriberAddress.getText().toString().trim(), "Kokata", "Salt Lake", "700108");
-        subscriberModel.addUserSocialInterests("None");
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
         System.out.println("SubscriberRegistration" + requestBody);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Constants.base_url + Constants.sub_registration, new Response.Listener<String>() {
+                Constants.base_url + Constants.registerUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("SubscriberRegistrationResponse" + response);
@@ -154,7 +147,7 @@ public class SubscriberRegistration extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("JsnnObjetSubscriberRegistrationErrorResponse" + error.toString());
+                System.out.println("JsonObjectSubscriberRegistrationErrorResponse" + error.toString());
                 appProgressDialog.hideProgressDialog();
                 if (error instanceof NetworkError) {
                 } else if (error instanceof ServerError) {
@@ -220,38 +213,21 @@ public class SubscriberRegistration extends AppCompatActivity {
             editTextMobileNumber.requestFocus();
             editTextMobileNumber.setText("");
             return validResp;
-        } else if (!Constants.emailValidator(editTextSubsriberEmail.getText().toString().trim())) {
+        } else if (!Constants.emailValidator(editTextSubscriberEmail.getText().toString().trim())) {
             validResp = false;
             //Toast.makeText(this, "Email cannot be blank", Toast.LENGTH_SHORT).show();
             //Constants.showAlert(this,"Email cannot be blank");
             Snackbar.make(findViewById(android.R.id.content), "Email cannot be blank", Snackbar.LENGTH_SHORT).show();
-            editTextSubsriberEmail.requestFocus();
-            editTextSubsriberEmail.setText("");
+            editTextSubscriberEmail.requestFocus();
+            editTextSubscriberEmail.setText("");
             return validResp;
-        } else if (editTextCity.getText().toString().trim().isEmpty()) {
-            validResp = false;
-            //Toast.makeText(this, "City cannot be blank", Toast.LENGTH_SHORT).show();
-            //Constants.showAlert(this,"Email cannot be blank");
-            Snackbar.make(findViewById(android.R.id.content), "City cannot be blank", Snackbar.LENGTH_SHORT).show();
-            editTextCity.requestFocus();
-            editTextCity.setText("");
-            return validResp;
-
-        } else if (editTextPinCode.getText().toString().trim().isEmpty()) {
+        }  else if (editTextPinCode.getText().toString().trim().isEmpty()) {
             validResp = false;
             //Toast.makeText(this, "PinCode cannot be blank", Toast.LENGTH_SHORT).show();
             //Constants.showAlert(this,"Email cannot be blank");
             Snackbar.make(findViewById(android.R.id.content), "PinCode cannot be blank", Snackbar.LENGTH_SHORT).show();
             editTextPinCode.requestFocus();
             editTextPinCode.setText("");
-            return validResp;
-        } else if (editTextState.getText().toString().trim().isEmpty()) {
-            validResp = false;
-            //Toast.makeText(this, "State cannot be blank", Toast.LENGTH_SHORT).show();
-            //Constants.showAlert(this,"Email cannot be blank");
-            Snackbar.make(findViewById(android.R.id.content), "State cannot be blank", Snackbar.LENGTH_SHORT).show();
-            editTextState.requestFocus();
-            editTextState.setText("");
             return validResp;
         }
         return validResp;
@@ -264,11 +240,30 @@ public class SubscriberRegistration extends AppCompatActivity {
 
     public void clearEditText() {
         editTextSubscriberName.setText("");
-        editTextState.setText("");
         editTextPinCode.setText("");
         editTextMobileNumber.setText("");
-        editTextCity.setText("");
-        editTextSubsriberEmail.setText("");
-        editTextSubscriberAddress.setText("");
+        editTextSubscriberEmail.setText("");
+    }
+    public void onAddImageClick(View view) {
+        Intent intent=new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,IMG_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==IMG_REQUEST && resultCode==RESULT_OK && data!=null){
+            Uri file=data.getData();
+            try {
+                Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),file);
+                imgSubscriberUpload.setImageBitmap(bitmap);
+                subscriberModel.setUserPickRef(ImageUtil.convert(bitmap));
+                subscriberModel.setUserPicName(file.getLastPathSegment());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
