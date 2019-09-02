@@ -66,15 +66,10 @@ public class MobileAuthentication extends AppCompatActivity {
         appProgressDialog.initializeProgress();
         appProgressDialog.showProgressDialog();
         subscriberModel.setUserPhone(Long.valueOf(edTMobileNumberAuthentication.getText().toString().trim()));
-        subscriberModel.setUserAge("12");
         subscriberModel.setUserEmail("None");
         subscriberModel.setUserPickRef("None");
         subscriberModel.setUserCountryCode("IN");
-        subscriberModel.setBonusPoints("0");
         subscriberModel.addUserPins("0");
-        subscriberModel.setOtpEntity("0");
-        subscriberModel.addUserAddresses("None", "None", "None", "None");
-        subscriberModel.addUserSocialInterests("None");
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
         System.out.println("MobileAuthentication" + requestBody);

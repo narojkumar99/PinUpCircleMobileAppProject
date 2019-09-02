@@ -47,6 +47,8 @@
                         android:layout_height="85dp"
                         android:layout_gravity="center_horizontal"
                         android:contentDescription="TODO"
+                        android:id="@+id/serviceUploadImage"
+                        android:onClick="onAddImageClick"
                         android:src="@drawable/user_profile_pic" />
 
                 </FrameLayout>

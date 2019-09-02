@@ -12,9 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Constants {
-
-    //http://13.59.60.142:8080/users/registerUser?userdef=abc"
     public static String base_url = "http://13.59.60.142:8080/";
+    public static String registerUser="users/registerUser";
     public static String sub_registration="users/registerUser?userdef=abc";
     public static String services_provied_reg="serviceprovider";
 
