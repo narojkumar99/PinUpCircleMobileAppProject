@@ -69,7 +69,7 @@ public class MobileAuthentication extends AppCompatActivity {
         subscriberModel.setUserEmail("None");
         subscriberModel.setUserPickRef("None");
         subscriberModel.setUserCountryCode("IN");
-        subscriberModel.addUserPins("0");
+        subscriberModel.addUserPins(0);
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
         System.out.println("MobileAuthentication" + requestBody);
