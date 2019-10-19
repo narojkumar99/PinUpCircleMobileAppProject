@@ -5,13 +5,17 @@
     <string name="city">City*</string>
     <string name="state">State*</string>
     <string name="address">Address</string>
-    <string name="name">Name</string>
-    <string name="email">Email</string>
+    <string name="name">Type Your Name</string>
+    <string name="email">Email(Optinal)</string>
+    <string name="nick_name">Type Your Nick Name</string>
     <string name="locality">Locality*</string>
     <string name="subscriber_s_registration">Subscriber\'s Registration</string>
     <string name="register_successfully">You have registered Successfully \n under the Pin Code</string>
     <string name="title_activity_mobile_authentication">MobileAuthentication</string>
     <string name="title_activity_map_place">MapPlaceActivity</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCYKa0nlzJvQiXy4mGBt7F6zAcHduF94LU</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBOeIuL3GX7KtmoVT1OxCxVOir2KmsNOFs</string>
+    <string name="services_category">Category</string>
+    <string name="title_activity_test">TestActivity</string>
+
 
 </resources>

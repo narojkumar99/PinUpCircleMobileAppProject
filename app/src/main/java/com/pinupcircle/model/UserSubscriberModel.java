@@ -20,7 +20,21 @@ class UserPin {
 }
 
 public class UserSubscriberModel {
-    private String userName, userEmail, userPickRef, userCountryCode,userPicName;
+    private String userName;
+    private String userEmail;
+    private String userPickRef;
+    private String userCountryCode;
+    private String userPicName;
+
+    public String getUserNickName() {
+        return userNickName;
+    }
+
+    public void setUserNickName(String userNickName) {
+        this.userNickName = userNickName;
+    }
+
+    private String userNickName;
     private Long userPhone;
     private List<UserPin> userPins;
 

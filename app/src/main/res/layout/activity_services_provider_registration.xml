@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/ic_mobile_background"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="12dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="Skip"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="28sp"
+            android:textColor="@color/white"
+            android:background="@color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="332dp"
+            android:layout_height="309dp"
+            android:layout_marginTop="0dp"
+            android:elevation="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_services_provider"
+            tools:ignore="VectorDrawableCompat" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/rectangle_mobile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.pinupcircle.utility.customfonts.TextViewFontsMedium
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="24dp"
+            android:text="Service Registration"
+            android:textColor="#3F51B5"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.pinupcircle.utility.customfonts.EditTextFontsRegular
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:inputType="textPersonName"
+            android:hint="Type your services name"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <com.pinupcircle.utility.customfonts.EditTextFontsRegular
+            android:id="@+id/editText3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="45dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginLeft="45dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/mobile_number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        <com.pinupcircle.utility.customfonts.EditTextFontsRegular
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="45dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto_medium"
+            android:inputType="textPersonName"
+            android:hint="Location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        <com.pinupcircle.utility.customfonts.EditTextFontsRegular
+            android:id="@+id/editText5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:textSize="14sp"
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="45dp"
+            android:fontFamily="@font/roboto_medium"
+            android:inputType="textPersonName"
+            android:hint="@string/services_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText4" />
+
+        <Button
+            android:id="@+id/btnServicesGo"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/register_active"
+            android:textColor="#ffffff"
+            android:text="GO"
+            android:fontFamily="@font/roboto_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:alpha="0.1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/buttom_backgound" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.pinupcircle.utils.RoundedImageView
+        android:id="@+id/imgSubscriberUpload"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:background="@drawable/circle_green"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/user_profile_pic" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

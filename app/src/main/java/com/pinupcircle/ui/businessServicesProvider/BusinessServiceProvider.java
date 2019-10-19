@@ -1,45 +1,18 @@
 package com.pinupcircle.ui.businessServicesProvider;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.pinupcircle.R;
 import com.pinupcircle.model.RegisteredUserModel;
 import com.pinupcircle.model.ServiceProviderModel;
-import com.pinupcircle.networkutilts.VolleySingleton;
+import com.pinupcircle.ui.subscriberRegistration.SubscriberRegistration;
 import com.pinupcircle.utils.AppProgressDialog;
-import com.pinupcircle.utils.Constants;
-import com.pinupcircle.utils.ImageUtil;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 public class BusinessServiceProvider extends AppCompatActivity {
     //final String url = "http://13.59.60.142:8080/serviceprovider";
@@ -60,7 +33,7 @@ public class BusinessServiceProvider extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_provider);
+        setContentView(R.layout.activity_services_provider_registration);
         mContext = BusinessServiceProvider.this;
         initValues();
     }
@@ -69,8 +42,8 @@ public class BusinessServiceProvider extends AppCompatActivity {
         appProgressDialog = new AppProgressDialog(mContext, "Please wait..");
         user = new RegisteredUserModel(this);
         serviceProviderModel = new ServiceProviderModel();
-        imgServiceNext = findViewById(R.id.imgServiceNext);
-        uploadServiceImage=findViewById(R.id.serviceUploadImage);
+        /*imgServiceNext = findViewById(R.id.imgServiceNext);
+        uploadServiceImage = findViewById(R.id.serviceUploadImage);
         editTextServiceProviderName = findViewById(R.id.editTextServiceProviderName);
         editTextServiceProviderService = findViewById(R.id.editTextServiceProviderService);
         editTextServiceState = findViewById(R.id.editTextServiceState);
@@ -78,10 +51,61 @@ public class BusinessServiceProvider extends AppCompatActivity {
         editTextServiceProviderMobileNumber = findViewById(R.id.editTextServiceProviderMobileNumber);
         editTextServicePinCode = findViewById(R.id.editTextServicePinCode);
         editTextServiceProviderAddress = findViewById(R.id.editTextServiceProviderAddress);
-        editTextServiceProviderEmail = findViewById(R.id.editTextServiceProviderEmail);
+        editTextServiceProviderEmail = findViewById(R.id.editTextServiceProviderEmail);*/
     }
 
-    public void onServiceRegistrationClick(View view) {
+   /* public void onServiceRegistrationClick(View view) {
+        if (validate()) {
+            doBusinessServicesRegistration();
+        } else {
+            //startActivity(new Intent(SubscriberRegistration.this, BusinessServiceProvider.class));
+        }
+    }
+*/
+   /* private boolean validate() {
+
+        Boolean validResp = true;
+
+        if (editTextServiceProviderName.getText().toString().trim().isEmpty()) {
+            validResp = false;
+            //Toast.makeText(this, " Name cannot be blank ", Toast.LENGTH_SHORT).show();
+            //Constants.showAlert(this,"First Name cannot be blank");
+            Snackbar.make(findViewById(android.R.id.content), "Business Name cannot be blank", Snackbar.LENGTH_SHORT).show();
+            editTextServiceProviderName.requestFocus();
+            editTextServiceProviderName.setText("");
+            return validResp;
+        } else if (editTextServiceProviderMobileNumber.getText().toString().trim().isEmpty()) {
+            validResp = false;
+            //Toast.makeText(this, "Mobile Number cannot be blank", Toast.LENGTH_SHORT).show();
+            //Constants.showAlert(this,"Last Name cannot be blank");
+            Snackbar.make(findViewById(android.R.id.content), "Business Mobile Number cannot be blank", Snackbar.LENGTH_SHORT).show();
+            editTextServiceProviderMobileNumber.requestFocus();
+            editTextServiceProviderMobileNumber.setText("");
+            return validResp;
+        }
+        *//*else if (!Constants.emailValidator(editTextServiceProviderEmail.getText().toString().trim())) {
+            validResp = false;
+            //Toast.makeText(this, "Email cannot be blank", Toast.LENGTH_SHORT).show();
+            //Constants.showAlert(this,"Email cannot be blank");
+            Snackbar.make(findViewById(android.R.id.content), "Business Email cannot be blank", Snackbar.LENGTH_SHORT).show();
+            editTextServiceProviderEmail.requestFocus();
+            editTextServiceProviderEmail.setText("");
+            return validResp;
+        }
+        *//*
+        else if (editTextServiceProviderService.getText().toString().trim().isEmpty()) {
+            validResp = false;
+            //Toast.makeText(this, "PinCode cannot be blank", Toast.LENGTH_SHORT).show();
+            //Constants.showAlert(this,"Email cannot be blank");
+            Snackbar.make(findViewById(android.R.id.content), "Business PinCode cannot be blank", Snackbar.LENGTH_SHORT).show();
+            editTextServiceProviderService.requestFocus();
+            editTextServiceProviderService.setText("");
+            return validResp;
+        }
+        return validResp;
+    }
+*/
+   /* private void doBusinessServicesRegistration() {
 
         serviceProviderModel.setUserRegId(user.getUserRegId());
         serviceProviderModel.setUserName(user.getUserName());
@@ -107,16 +131,23 @@ public class BusinessServiceProvider extends AppCompatActivity {
                 clearEditText();
             }
         }, new Response.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println(error.toString());
                 System.out.println("JsonObjectBusinessProviderSubscriberRegistrationErrorResponse" + error.toString());
                 if (error instanceof NetworkError) {
+
                 } else if (error instanceof ServerError) {
+
                 } else if (error instanceof AuthFailureError) {
+
                 } else if (error instanceof ParseError) {
+
                 } else if (error instanceof NoConnectionError) {
+
                 } else if (error instanceof TimeoutError) {
+
                     Toast.makeText(mContext,
                             "Timeout error!",
                             Toast.LENGTH_LONG).show();
@@ -138,6 +169,7 @@ public class BusinessServiceProvider extends AppCompatActivity {
                 }
             }
         };
+
         stringRequest.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
@@ -189,6 +221,16 @@ public class BusinessServiceProvider extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }*/
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent mIntent=new Intent(BusinessServiceProvider.this,SubscriberRegistration.class);
+        startActivity(mIntent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+        finish();
     }
 }
 

@@ -1,0 +1,30 @@
+<tabs>
+    <tab
+        id="@+id/ic_live_news"
+        icon="@drawable/ic_cart_time"
+        title=" Live News"
+        activeColor="#DF0825"/>
+    <tab
+        id="@+id/ic_search"
+        icon="@drawable/ic_search"
+        title="Search"
+
+        activeColor="#335EA9"/>
+    <tab
+        id="@+id/ic_community"
+        icon="@drawable/ic_community"
+        title="Community"
+
+        activeColor="#335EA9"/>
+    <tab
+        id="@+id/ic_account"
+        icon="@drawable/ic_setting"
+        title="Account"
+
+        activeColor="#335EA9"/>
+    <tab
+        id="@+id/ic_more"
+        icon="@drawable/ic_more"
+        title="More"
+        activeColor="#335EA9"/>
+</tabs>

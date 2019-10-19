@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by naroj on 2/05/2017.
  */
+
 public class VolleySingleton extends MultiDexApplication {
 
     public static final String TAG = VolleySingleton.class

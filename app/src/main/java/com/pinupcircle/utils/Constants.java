@@ -16,7 +16,10 @@ public class Constants {
     public static String registerUser="users/registerUser";
     public static String sub_registration="users/registerUser?userdef=abc";
     public static String services_provied_reg="serviceprovider";
+    public static String services_registerUserWithMobileNum="users/registerUserWithMobileNum";
+    public static String services_registerUserValidateOTP="users/validateOTP";
 
+    public static String userId ="userId";
 
 
     public static boolean emailValidator(String email) {
@@ -45,6 +48,12 @@ public class Constants {
         Toast.makeText(mContext, toastString, Toast.LENGTH_LONG).show();
     }
 
+    public static boolean isValidMobile(String phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
 
+    public static void dialogMessage(Context mContext, String toastString){
+
+    }
 
 }

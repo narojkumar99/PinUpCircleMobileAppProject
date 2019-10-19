@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -13,61 +14,71 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<fragment
+        <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />-->
+            android:layout_height="match_parent" />
+
+
     </FrameLayout>
 
 
- <!--   <RelativeLayout
-        android:id="@+id/ll_header"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="190dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    android:background="@drawable/rectangle_mobile"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:ignore="MissingConstraints">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentTop="true"
-
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/img_nav"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp" />
-
-        <ImageView
-            android:id="@+id/searchItems"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:padding="2dp" />
-
-        <LinearLayout
-            android:id="@+id/lin_drawer"
-            android:layout_width="78dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center|center_vertical"
-            android:orientation="horizontal"
-            android:shadowColor="#cecece" />
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txt_header_name_view"
+            android:id="@+id/currentAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="36dp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text=""
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>-->
+            android:text="">
+
+        </TextView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@drawable/go"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_below="@+id/currentAddress"
+            android:id="@+id/addPinCode"
+            tools:ignore="MissingConstraints">
+
+        </Button>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -83,15 +94,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-          <!--  <fragment
+            <fragment
                 android:id="@+id/autocomplete_fragment"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
