@@ -31,10 +31,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.pinupcircle.R;
 import com.pinupcircle.model.OTPAuthenticModel;
-import com.pinupcircle.model.OTPValidateModel;
-import com.pinupcircle.model.UserSubscriberModel;
+
 import com.pinupcircle.networkutilts.VolleySingleton;
 import com.pinupcircle.ui.home.DashboardActivity;
+import com.pinupcircle.ui.map.MapPlaceActivity;
 import com.pinupcircle.ui.subscriberRegistration.SubscriberRegistration;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
@@ -52,12 +52,13 @@ import java.io.UnsupportedEncodingException;
 
 public class MobileAuthentication extends AppCompatActivity {
     JSONObject jsonObjectResponse;
-    EditText edTMobileNumberAuthentication,otpValue;
+    EditText edTMobileNumberAuthentication, otpValue;
     OTPAuthenticModel otpAuthenticModel;
     Context mContext;
     String tag_string_obj = "json_string_req";
     AppProgressDialog appProgressDialogOtpSend;
     AppCompatButton btnMobileVerify;
+    Integer userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MobileAuthentication extends AppCompatActivity {
             public void onClick(View view) {
                 btnMobileVerify.setEnabled(false);
                 hideKeyboard();
-               sendMobileAuthentication();
+                sendMobileAuthentication();
             }
         });
 
@@ -130,16 +131,13 @@ public class MobileAuthentication extends AppCompatActivity {
                 Constants.base_url + Constants.services_registerUserWithMobileNum, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                appProgressDialogOtpSend.hideProgressDialog();
-                System.out.println("MobileAuthentctionResponse" + response);
                 try {
-                    jsonObjectResponse = new JSONObject(response);
-                    Integer userId = jsonObjectResponse.getInt("userId");
-                    CustomPreference.with(mContext).save(Constants.userId, userId);
-                    Intent mIntent=new Intent(MobileAuthentication.this,OTPAuthenticaton.class);
-                    startActivity(mIntent);
-                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                    finish();
+                     appProgressDialogOtpSend.hideProgressDialog();
+                     System.out.println("MobileAuthentctionResponse" + response);
+                     jsonObjectResponse = new JSONObject(response);
+                     userId = jsonObjectResponse.getInt("userId");
+                     CustomPreference.with(mContext).save(Constants.userId, userId);
+                    redirectIntent();
 
                 } catch (JSONException e) {
                     appProgressDialogOtpSend.hideProgressDialog();
@@ -185,7 +183,7 @@ public class MobileAuthentication extends AppCompatActivity {
                 }
             }
         };
-         stringRequest.setRetryPolicy(new RetryPolicy() {
+        stringRequest.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
                 return 50000;
@@ -231,6 +229,20 @@ public class MobileAuthentication extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void redirectIntent() {
+        clearEditText();
+        Toast.makeText(mContext, ""+ CustomPreference.with(this).getInt(Constants.userId,0), Toast.LENGTH_SHORT).show();
+       /* Intent mIntent = new Intent(MobileAuthentication.this, MapPlaceActivity.class);
+        startActivity(mIntent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+        finish();*/
+         /* Intent mIntent = new Intent(MobileAuthentication.this, OTPAuthenticaton.class);
+                    startActivity(mIntent);
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                    finish();*/
+
     }
 }
 

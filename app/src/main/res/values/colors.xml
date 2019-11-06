@@ -14,5 +14,13 @@
 
     <color name="otp_inactive">#66335EA9</color>
     <color name="otp_active">#335EA9</color>
+    <color name="color_blue_dark">#232e42</color>
+    <item name="yellow" type="color">#F7B500</item>
+    <item name="yellow_dark" type="color">#AC7E00</item>
+
+    <integer-array name="androidcolors">
+        <item>@color/yellow</item>
+        <item>@color/yellow_dark</item>
+    </integer-array>
 
 </resources>

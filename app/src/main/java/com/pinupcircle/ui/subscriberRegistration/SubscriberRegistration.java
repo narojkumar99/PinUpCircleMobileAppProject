@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -62,6 +63,7 @@ import com.pinupcircle.ui.mobileOTPAuthentication.OTPAuthenticaton;
 import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.CheckPermission;
 import com.pinupcircle.utils.Constants;
+import com.pinupcircle.utils.CustomPreference;
 import com.pinupcircle.utils.ImageUtil;
 import com.pinupcircle.utils.RoundedImageView;
 
@@ -89,29 +91,24 @@ import static com.pinupcircle.utils.Constants.trimMessage;
 public class SubscriberRegistration extends AppCompatActivity implements LocationListener {
 
     String tag_string_obj = "json_string_req";
-    //final String url = "http://13.59.60.142:8080/users/registerUser?userdef=abc";
     UserSubscriberModel subscriberModel;
-    private final int IMG_REQUEST=1;
-    ImageView imgNext,imgSubscriberUpload;
-    EditText editTextSubscriberName,editTextMobileNumber,editTextPinCode,editTextSubscriberEmail,editTextNickName;
-    String mobileNumber = "";
+    ImageView imgSubscriberUpload;
+    EditText editTextSubscriberName,editTextNickName;
     JSONObject jsonObjectResponse = null;
     String json = null;
     Context mContext;
     AppProgressDialog appProgressDialog;
     RegisteredUserModel user;
-    public final static int TAG_PERMISSION_LOCATION_CODE=1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     TextView  registerYourServices;
     private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
-    public static final String ALLOW_KEY = "ALLOWED";
-    public static final String CAMERA_PREF = "camera_pref";
     private Bitmap bitmap;
     private File destination = null;
     private InputStream inputStreamImg;
     private String imgPath = null;
     Button btnGO;
+    int userRegId;
+    int statusCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +136,6 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
         imgSubscriberUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
                 {
                     if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.CAMERA))
@@ -164,10 +160,6 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
 
                 if (validate()) {
                     doSubscriberRegistration();
-                    /*Intent mIntent = new Intent(SubscriberRegistration.this,MapPlaceActivity.class);
-                    startActivity(mIntent);
-                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                    finish();*/
                 } else {
                 }
             }
@@ -212,7 +204,6 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         inputStreamImg = null;
         if (requestCode == PICK_IMAGE_CAMERA) {
             try {
@@ -220,9 +211,7 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
                 bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
-
                 Log.e("Activity", "Pick from Camera::>>> ");
-
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 destination = new File(Environment.getExternalStorageDirectory() + "/" + getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");
                 FileOutputStream fo;
@@ -238,9 +227,8 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
                 }
 
                 imgPath = destination.getAbsolutePath();
-
                 imgSubscriberUpload.setImageBitmap(bitmap);
-                subscriberModel.setUserPickRef(ImageUtil.convert(bitmap));
+                subscriberModel.setUserPicRef(ImageUtil.convert(bitmap));
                 subscriberModel.setUserPicName(imgPath);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -255,7 +243,7 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
                 imgPath = getRealPathFromURI(selectedImage);
                 destination = new File(imgPath.toString());
                 imgSubscriberUpload.setImageBitmap(bitmap);
-                subscriberModel.setUserPickRef(ImageUtil.convert(bitmap));
+                subscriberModel.setUserPicRef(ImageUtil.convert(bitmap));
                 subscriberModel.setUserPicName(imgPath);
 
             } catch (Exception e) {
@@ -278,53 +266,43 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
 
     private void initFields() {
 
-        //imgNext                 = findViewById(R.id.imgNext);
         imgSubscriberUpload     = findViewById(R.id.imgSubscriberUpload);
         editTextSubscriberName  = findViewById(R.id.editTextSubscriberName);
         editTextNickName        = findViewById(R.id.editTextNickName);
-        //editTextMobileNumber    = findViewById(R.id.editTextMobileNumber);
-        //editTextPinCode         = findViewById(R.id.editTextPinCode);
         registerYourServices    = findViewById(R.id.registerYourService);
         btnGO                   = findViewById(R.id.btnGO);
         appProgressDialog = new AppProgressDialog(mContext, "Please wait..");
         subscriberModel   = new UserSubscriberModel();
         user              = new RegisteredUserModel(this);
+        userRegId         = CustomPreference.with(mContext).getInt(Constants.userId,0);
     }
 
     private void doSubscriberRegistration() {
         appProgressDialog.initializeProgress();
         appProgressDialog.showProgressDialog();
+        subscriberModel.setUserRegId(userRegId);
         subscriberModel.setUserName(editTextSubscriberName.getText().toString().trim());
         subscriberModel.setUserNickName(editTextNickName.getText().toString().trim());
-        subscriberModel.addUserPins(Integer.parseInt(editTextPinCode.getText().toString().trim()));
+        //subscriberModel.addUserPins(Integer.parseInt(editTextPinCode.getText().toString().trim()));
         Gson gson = new Gson();
         final String requestBody = gson.toJson(subscriberModel);
         System.out.println("SubscriberRegistration" + requestBody);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Constants.base_url + Constants.registerUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("SubscriberRegistrationResponse" + response);
                 try {
-                    jsonObjectResponse = new JSONObject(response);
-                    int statusCode = jsonObjectResponse.getInt("registrationStatus");
-                    user.setUserRegId(jsonObjectResponse.getInt("userRegId"));
-                    user.setUserName(jsonObjectResponse.getString("userName"));
+                     jsonObjectResponse = new JSONObject(response);
+                     statusCode         = jsonObjectResponse.getInt("registrationStatus");
+                     //status code chk
                     if (statusCode == 1) {
                         appProgressDialog.hideProgressDialog();
-                        Toast.makeText(SubscriberRegistration.this, ""
-                                        + jsonObjectResponse.getString("description")
-                                , Toast.LENGTH_SHORT).show();
-                        Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
-                        clearEditText();
-                       /* Intent mIntent=new Intent(SubscriberRegistration.this,DashboardActivity.class);
-                        startActivity(mIntent);
-                        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                        finish();*/
+                        Snackbar.make(findViewById(android.R.id.content),"Subscriber Registration Sucessfully", Snackbar.LENGTH_SHORT).show();
+                        redirectIntent();
                     } else {
                         appProgressDialog.hideProgressDialog();
-                        Snackbar.make(findViewById(android.R.id.content), jsonObjectResponse.getString("description"), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),"Registration Failed", Snackbar.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     System.out.println("SubscriberRegistrationWebServiceError" + e.getMessage());
@@ -384,11 +362,18 @@ public class SubscriberRegistration extends AppCompatActivity implements Locatio
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest, tag_string_obj);
     }
 
+    private void redirectIntent() {
+         clearEditText();
+         Intent mIntent = new Intent(SubscriberRegistration.this,MapPlaceActivity.class);
+                    startActivity(mIntent);
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                    finish();
+    }
+
     private boolean validate() {
         Boolean validResp = true;
         if (editTextSubscriberName.getText().toString().trim().isEmpty()) {
             validResp = false;
-
             Snackbar.make(findViewById(android.R.id.content), "Enter Your Name", Snackbar.LENGTH_SHORT).show();
             editTextSubscriberName.requestFocus();
             editTextSubscriberName.setText("");

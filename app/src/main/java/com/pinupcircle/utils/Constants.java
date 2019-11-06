@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
 
 public class Constants {
     public static String base_url = "http://13.59.60.142:8080/";
-    public static String registerUser="users/registerUser";
+    public static String registerUser="users/v2/registerUser";
     public static String sub_registration="users/registerUser?userdef=abc";
     public static String services_provied_reg="serviceprovider";
     public static String services_registerUserWithMobileNum="users/registerUserWithMobileNum";
     public static String services_registerUserValidateOTP="users/validateOTP";
-
     public static String userId ="userId";
-
-
+    public static String TAG_FRAGMENT_HOME = "mFrag_home";
+    public static String TAG_FRAGMENT_ACCOUNT = "mFrag_account";
+    public static String TAG_FRAGMENT_POST = "mFrag_post";
     public static boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;

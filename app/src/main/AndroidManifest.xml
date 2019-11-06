@@ -31,8 +31,15 @@
         <activity
             android:name=".ui.home.DashboardActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBarMain">
+            android:windowSoftInputMode="adjustPan"
 
+            android:theme="@style/AppTheme.NoActionBarMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -49,6 +56,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -87,6 +100,7 @@
             android:name=".ui.subscriberRegistration.SubscriberRegistration"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
+
         </activity>
         <activity
             android:name=".ui.subscriberRegistration.UserScriberActivity"
@@ -99,12 +113,7 @@
         </activity>
 
         <activity android:name=".ui.CommunityPostActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"

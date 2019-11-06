@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">PinUpCircle</string>
-    <string name="mobile_number">Mobile Number*</string>
+    <string name="mobile_number">Enter your phone Number*</string>
     <string name="pin_zip_code">Pin/Zip Code*</string>
     <string name="city">City*</string>
     <string name="state">State*</string>
     <string name="address">Address</string>
-    <string name="name">Type Your Name</string>
+    <string name="name">Type Your Name*</string>
     <string name="email">Email(Optinal)</string>
     <string name="nick_name">Type Your Nick Name</string>
     <string name="locality">Locality*</string>
@@ -16,6 +16,9 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBOeIuL3GX7KtmoVT1OxCxVOir2KmsNOFs</string>
     <string name="services_category">Category</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="no_internet_connection"> No Internet Connection</string>
 
+    <string name="text_comments">Hello! Do you know Me? Hello! Do you know Me? Hello! Do you know Me?Hello! Do you know Me?
+    </string>
 
 </resources>

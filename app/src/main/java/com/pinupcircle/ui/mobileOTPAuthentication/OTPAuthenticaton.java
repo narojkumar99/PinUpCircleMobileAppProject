@@ -50,7 +50,7 @@ public class OTPAuthenticaton extends AppCompatActivity {
     String tag_string_OTPVerifyobj = "json_string_OTPVerify_req";
     Button btnVerify;
     PinView otpPinSet;
-    int userId;
+    int userRegId;
     Context mContext;
     AppProgressDialog  appProgressVerifyDialog;
     OTPValidateModel otpValidateModel;
@@ -60,7 +60,7 @@ public class OTPAuthenticaton extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_authenticaton);
         mContext=OTPAuthenticaton.this;
-        userId= CustomPreference.with(mContext).getInt(Constants.userId,0);
+        userRegId = CustomPreference.with(mContext).getInt(Constants.userId,0);
         initFields();
         setListener();
 
@@ -115,7 +115,7 @@ public class OTPAuthenticaton extends AppCompatActivity {
         appProgressVerifyDialog.initializeProgress();
         appProgressVerifyDialog.showProgressDialog();
 
-        otpValidateModel.setUserRegId(userId);
+        otpValidateModel.setUserRegId(userRegId);
         otpValidateModel.setUserOTP(otpPinSet.getText().toString().trim());
         Gson gson = new Gson();
         final String requestBody = gson.toJson(otpValidateModel);
