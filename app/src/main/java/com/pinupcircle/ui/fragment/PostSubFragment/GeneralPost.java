@@ -50,8 +50,8 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
     ImageView sendPost;
     String tag_string_obj = "json_string_req";
     private CommunityPostTextModel communityPostTextModel;
-    private CustomPreference customPreference;
-    String textUrl = "http://13.59.60.142:8080/communitypost/post";
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,7 +90,6 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
                 getActivity().getFragmentManager().beginTransaction().remove(generalPost).commit();
                 break;
             case R.id.sendPost:
-                Toast.makeText(mContext, "Send", Toast.LENGTH_SHORT).show();
                 String communityPost = editTextGeneralPost.getText().toString().trim();
                 communityTextPostRequest(communityPost);
                 break;
@@ -104,8 +103,8 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
         Gson gson = new Gson();
         final String requestBody = gson.toJson(communityPostTextModel);
         System.out.println("atagcommunitypost" + requestBody);
-      /*  StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                textUrl, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Constants.base_url + Constants.communipost, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("CommunityPostTextResponse" + response);
@@ -164,7 +163,7 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
 
             }
         });
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest, tag_string_obj);*/
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest, tag_string_obj);
     }
 
 }

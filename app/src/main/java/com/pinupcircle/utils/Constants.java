@@ -20,8 +20,10 @@ public class Constants {
     public static String services_registerUserValidateOTP="users/validateOTP";
     public static String userId ="userId";
     public static String TAG_FRAGMENT_HOME = "mFrag_home";
+    public static String communipost = "communitypost/post";
     public static String TAG_FRAGMENT_ACCOUNT = "mFrag_account";
     public static String TAG_FRAGMENT_POST = "mFrag_post";
+
     public static boolean emailValidator(String email) {
         Pattern pattern;
         Matcher matcher;
