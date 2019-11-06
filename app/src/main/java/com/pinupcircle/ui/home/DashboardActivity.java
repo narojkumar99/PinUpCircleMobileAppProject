@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pinupcircle.R;
 import com.pinupcircle.ui.fragment.AccountFragment;
-import com.pinupcircle.ui.fragment.BottomSheetFragment.BottomSheetFragment;
+
 import com.pinupcircle.ui.fragment.HomeFragment;
 import com.pinupcircle.ui.fragment.PostFragment;
 import com.pinupcircle.ui.mobileOTPAuthentication.OTPAuthenticaton;
