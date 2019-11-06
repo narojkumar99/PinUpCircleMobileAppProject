@@ -32,6 +32,7 @@ import com.pinupcircle.model.CommunityPostTextModel;
 import com.pinupcircle.networkutilts.VolleySingleton;
 import com.pinupcircle.ui.fragment.PostFragment;
 import com.pinupcircle.ui.home.DashboardActivity;
+import com.pinupcircle.utils.AppProgressDialog;
 import com.pinupcircle.utils.Constants;
 import com.pinupcircle.utils.CustomPreference;
 
@@ -50,7 +51,7 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
     ImageView sendPost;
     String tag_string_obj = "json_string_req";
     private CommunityPostTextModel communityPostTextModel;
-
+    AppProgressDialog appProgressDialogOtpSend;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +80,7 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
         sendPost = view.findViewById(R.id.sendPost);
         editTextGeneralPost = view.findViewById(R.id.generalPost);
         communityPostTextModel = new CommunityPostTextModel();
-
+        appProgressDialogOtpSend = new AppProgressDialog(getActivity(), "wait while your post");
     }
 
     @Override
@@ -97,6 +98,7 @@ public class GeneralPost extends Fragment implements View.OnClickListener {
     }
 
     private void communityTextPostRequest(String communityPost) {
+        //appProgressDialogOtpSend.showProgressDialog();
         communityPostTextModel.setPostText(communityPost);
         communityPostTextModel.setUserId(3);
         communityPostTextModel.addCommunityPin("700120");
